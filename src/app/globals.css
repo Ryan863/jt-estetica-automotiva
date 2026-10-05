@@ -1,0 +1,259 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #05070d;
+  --surface: #0a1020;
+  --surface-2: #0d1731;
+  --fg: #f2f5fb;
+  --muted: #94a1bd;
+  --accent: #1f6bff;
+  --accent-2: #5b9bff;
+  --navy: #12307a;
+  --line: rgba(255, 255, 255, 0.09);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-navy: var(--navy);
+  --color-line: var(--line);
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-outfit), var(--font-inter), system-ui, sans-serif;
+}
+
+/* ---------- base ---------- */
+html {
+  background: var(--bg);
+  color-scheme: dark;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* ---------- tipografia ---------- */
+.display {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+  font-weight: 300;
+}
+.display em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+}
+
+/* ---------- botões ---------- */
+@layer components {
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 48px;
+  padding: 0 1.6rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.35s ease,
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease;
+}
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 0 0 0 rgba(31, 107, 255, 0.5), 0 10px 30px -10px rgba(31, 107, 255, 0.7);
+}
+.btn-primary:hover {
+  background: #3d80ff;
+  box-shadow: 0 0 0 6px rgba(31, 107, 255, 0.18), 0 14px 40px -10px rgba(31, 107, 255, 0.9);
+}
+.btn-ghost {
+  color: var(--fg);
+  border: 1px solid rgba(91, 155, 255, 0.55);
+  background: rgba(8, 14, 30, 0.35);
+  backdrop-filter: blur(8px);
+}
+.btn-ghost:hover {
+  background: rgba(31, 107, 255, 0.18);
+  border-color: var(--accent-2);
+}
+.btn-light {
+  background: #0b1530;
+  color: #fff;
+}
+.btn-light:hover {
+  background: var(--accent);
+}
+.btn-outline-dark {
+  color: #0b1530;
+  border: 1px solid rgba(11, 21, 48, 0.35);
+}
+.btn-outline-dark:hover {
+  background: rgba(11, 21, 48, 0.07);
+  border-color: #0b1530;
+}
+}
+
+/* ---------- aurora (hero) ---------- */
+@keyframes aurora {
+  from {
+    background-position: 50% 50%, 50% 50%;
+  }
+  to {
+    background-position: 350% 50%, 350% 50%;
+  }
+}
+
+.aurora-layer {
+  --stripes: repeating-linear-gradient(
+    100deg,
+    #000 0%,
+    #000 7%,
+    transparent 10%,
+    transparent 12%,
+    #000 16%
+  );
+  --aurora: repeating-linear-gradient(
+    100deg,
+    #1f6bff 10%,
+    #4f8dff 15%,
+    #12307a 20%,
+    #7db0ff 25%,
+    #2a4fd6 30%
+  );
+  position: absolute;
+  inset: -10px;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: screen;
+  filter: blur(10px);
+  will-change: transform;
+  background-image: var(--stripes), var(--aurora);
+  background-size: 300%, 200%;
+  background-position: 50% 50%, 50% 50%;
+}
+.aurora-layer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: var(--stripes), var(--aurora);
+  background-size: 200%, 100%;
+  mix-blend-mode: difference;
+  animation: aurora 60s linear infinite;
+}
+.aurora-mask {
+  -webkit-mask-image: radial-gradient(ellipse at 80% 0%, #000 10%, transparent 72%);
+  mask-image: radial-gradient(ellipse at 80% 0%, #000 10%, transparent 72%);
+}
+
+/* ---------- cards com brilho que segue o cursor ---------- */
+.glow-card {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  transition: border-color 0.4s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.glow-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 0%),
+    rgba(31, 107, 255, 0.22),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.glow-card:hover {
+  border-color: rgba(91, 155, 255, 0.4);
+}
+.glow-card:hover::before {
+  opacity: 1;
+}
+
+/* ---------- marquee ---------- */
+.marquee-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(242, 245, 251, 0.55);
+}
+
+/* ---------- mapa escuro ---------- */
+.map-dark {
+  filter: invert(92%) hue-rotate(185deg) saturate(0.85) contrast(0.92) brightness(0.95);
+}
+
+/* ---------- WhatsApp flutuante ---------- */
+@keyframes wa-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+.wa-ring {
+  animation: wa-ring 2.2s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-layer::after,
+  .wa-ring {
+    animation: none;
+  }
+}
